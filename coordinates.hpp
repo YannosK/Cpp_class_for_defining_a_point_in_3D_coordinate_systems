@@ -4,6 +4,10 @@
 class Point
 {
 private:
+    /********************************/
+    /* private fields               */
+    /********************************/
+
     // Cartesian coordinates
     double x;
     double y;
@@ -14,10 +18,25 @@ private:
     double zenith;    // angle from z-axis to r vector
     // Cylindrical coordinates
     double r_c;
-    double azimuth_c;
+    double azimuth_c; // in xy pane, from x to y
     double z_c;
 
+    /********************************/
+    /* private methods              */
+    /********************************/
+
+    void cartesian_to_spherical();
+    void cartesian_to_cylindrical();
+    void cylindrical_to_cartesian();
+    void cylindrical_to_spherical();
+    void spherical_to_cartesian();
+    void spherical_to_cylindrical();
+
 public:
+    /********************************/
+    /* constructor                  */
+    /********************************/
+
     /**
      * Default constructor
      * Supports definition of a point either in cartesian, spherical or cylindrical coordinate systems
@@ -31,6 +50,22 @@ public:
      * - a (char)   : 'o' for cartesian system, 's' for spherical system, 'c' for cylindrical system
      */
     Point(double x = 0., double y = 0., double z = 0., char a = 'o');
+
+    /********************************/
+    /* public methods               */
+    /********************************/
+
+    double getCartesianX();
+    double getCartesianY();
+    double getCartesianZ();
+
+    double getSphericalRadial();
+    double getSphericalAzimuth();
+    double getSphericalZenith();
+
+    double getCylindricalRadial();
+    double getCylindricalAzimuth();
+    double getCylindricalZ();
 };
 
 #endif
