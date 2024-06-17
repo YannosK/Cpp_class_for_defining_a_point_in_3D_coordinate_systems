@@ -19,6 +19,7 @@ void Point::cartesian_to_spherical()
     if (azim < 0)
         this->azimuth_s = azim + 2. * M_PI;
 
+    // not sure if it needs a check like azimuth
     if (this->z == 0.)
         this->zenith = atan2(sqrt(pow(this->x, 2) + pow(this->y, 2)), DBL_MIN);
     else
@@ -27,22 +28,58 @@ void Point::cartesian_to_spherical()
 
 void Point::cartesian_to_cylindrical()
 {
+    double azim;
+
+    this->r_c = sqrt(pow(this->x, 2) + pow(this->y, 2));
+
+    if (this->x == 0.)
+        azim = atan2(this->y, DBL_MIN);
+    else
+        azim = atan2(this->y, this->x);
+    if (azim < 0)
+        this->azimuth_c = azim + 2. * M_PI;
+
+    this->z_c = this->z;
 }
 
 void Point::cylindrical_to_cartesian()
 {
+    this->x = (this->r_c) * cos(this->azimuth_c);
+
+    this->y = (this->r_c) * sin(this->azimuth_c);
+
+    this->z = this->z_c;
 }
 
 void Point::cylindrical_to_spherical()
 {
+    this->r_s = sqrt(pow(this->r_c, 2) + pow(this->z_c, 2));
+
+    this->azimuth_s = this->azimuth_c;
+
+    // not sure if it needs a check like azimuth
+    if (this->z_c == 0.)
+        this->zenith = atan2(this->r_c, DBL_MIN);
+    else
+        this->zenith = atan2(this->r_c, this->z_c);
 }
 
 void Point::spherical_to_cartesian()
 {
+    this->x = (this->r_s) * sin(this->zenith) * cos(this->azimuth_s);
+
+    this->y = (this->r_s) * sin(this->zenith) * sin(this->azimuth_s);
+
+    this->z = (this->r_s) * cos(this->zenith);
 }
 
 void Point::spherical_to_cylindrical()
 {
+    this->r_c = (this->r_s) * sin(this->zenith);
+
+    this->azimuth_c = this->azimuth_s;
+
+    this->z_c = (this->r_s) * cos(this->zenith);
 }
 
 /********************************/
