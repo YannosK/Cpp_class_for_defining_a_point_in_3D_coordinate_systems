@@ -55,6 +55,8 @@ public:
     /* public methods               */
     /********************************/
 
+    /*------------------------Getters---------------------------------*/
+
     double getCartesianX();
     double getCartesianY();
     double getCartesianZ();
@@ -66,6 +68,20 @@ public:
     double getCylindricalRadial();
     double getCylindricalAzimuth();
     double getCylindricalZ();
+
+    /*------------------------Printers--------------------------------*/
+
+    void printCartesian();
+    void printCylindrical();
+    void printSpherical();
+
+    // ostream printToStreamCartesian();
+
+    /********************************/
+    /* operator overloads           */
+    /********************************/
+
+    // Point operator+(Point b);
 };
 
 #endif

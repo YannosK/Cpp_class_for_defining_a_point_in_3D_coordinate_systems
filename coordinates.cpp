@@ -1,4 +1,5 @@
 #include "coordinates.hpp"
+#include <iostream>
 #include <cmath>
 #include <float.h>
 
@@ -18,6 +19,8 @@ void Point::cartesian_to_spherical()
         azim = atan2(this->y, this->x);
     if (azim < 0)
         this->azimuth_s = azim + 2. * M_PI;
+    else
+        this->azimuth_s = azim;
 
     // not sure if it needs a check like azimuth
     if (this->z == 0.)
@@ -38,6 +41,8 @@ void Point::cartesian_to_cylindrical()
         azim = atan2(this->y, this->x);
     if (azim < 0)
         this->azimuth_c = azim + 2. * M_PI;
+    else
+        this->azimuth_c = azim;
 
     this->z_c = this->z;
 }
@@ -118,7 +123,8 @@ Point::Point(double x, double y, double z, char a)
 /* public methods               */
 /********************************/
 
-// by value!!!
+/*------------------------Getters---------------------------------*/
+
 double Point::getCartesianX() { return this->x; }
 
 double Point::getCartesianY() { return this->y; }
@@ -136,3 +142,50 @@ double Point::getCylindricalRadial() { return this->r_c; }
 double Point::getCylindricalAzimuth() { return this->azimuth_c; }
 
 double Point::getCylindricalZ() { return this->z_c; }
+
+/*------------------------Printers--------------------------------*/
+
+/**
+ * Prints cartesian coordinates of Point object
+ * The form is: [ x , y , z ]
+ */
+void Point::printCartesian()
+{
+    std::cout << "[ " << this->x << " , " << this->y << " , " << this->z << " ]" << std::endl;
+}
+
+/**
+ * Prints cylindrical coordinates of Point object
+ * The form is: [ radius , azimuth , z ]
+ *
+ * radius is on the x-y plane and z is the third dimension
+ */
+void Point::printCylindrical()
+{
+    std::cout << "[ " << this->r_c << " , " << this->azimuth_c << " , " << this->z_c << " ]" << std::endl;
+}
+
+/**
+ * Prints cartesian coordinates of Point object
+ * The form is: [ radius , azimuth , zenith ]
+ */
+void Point::printSpherical()
+{
+    std::cout << "[ " << this->r_s << " , " << this->azimuth_s << " , " << this->zenith << " ]" << std::endl;
+}
+
+// std::ostream Point::printToStreamCartesian()
+// {
+//     std::ostream stream;
+//     stream << "[ " << this->x << " , " << this->y << " , " << this->z << " ]";
+//     return stream;
+// }
+
+/********************************/
+/* operator overloads           */
+/********************************/
+
+// Point Point::operator+(Point b)
+// {
+//     Point a;
+// }
