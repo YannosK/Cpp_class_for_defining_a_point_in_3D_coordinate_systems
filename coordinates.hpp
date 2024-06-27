@@ -55,7 +55,7 @@ public:
     /* public methods               */
     /********************************/
 
-    /*------------------------Getters---------------------------------*/
+    /*-----------------------Getters (all are by value)----------------*/
 
     double getCartesianX();
     double getCartesianY();
@@ -83,5 +83,19 @@ public:
 
     // Point operator+(Point b);
 };
+
+/**
+ * A function that calculates the distance between two point objects
+ * Since Point objects are 3D vectors this corresponds to vector subtraction that produces a distance vector
+ * This function returns the magnitude of this distance vector
+ *
+ * Args:
+ * - a (Point object type) : starting point
+ * - b (Point object type) : ending point
+ *
+ * Returns:
+ * - a double that corresponds to the distance between them
+ */
+double distance_of_points(Point a, Point b);
 
 #endif

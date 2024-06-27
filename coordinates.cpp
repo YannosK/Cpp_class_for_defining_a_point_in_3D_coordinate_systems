@@ -189,3 +189,12 @@ void Point::printSpherical()
 // {
 //     Point a;
 // }
+
+double distance_of_points(Point a, Point b)
+{
+    double x = a.getCartesianX() - b.getCartesianX();
+    double y = a.getCartesianY() - b.getCartesianY();
+    double z = a.getCartesianZ() - b.getCartesianZ();
+
+    return sqrt(x * x + y * y + z * z);
+}
