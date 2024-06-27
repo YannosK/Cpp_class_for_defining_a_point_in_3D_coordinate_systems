@@ -66,6 +66,38 @@ int main(void)
           << "zenith = " << p4.getSphericalZenith() << " rads" << endl;
 
      /*********************************************************************************/
+     // Testing overloaded operator << and >> operators
+     /*********************************************************************************/
+
+     cout << "\nPlease insert new values to p1:";
+     cin >> p1;
+
+     cout << endl
+          << "Point p1: " << p1 << endl
+          << "Point p2: " << p2 << endl
+          << "Point p3: " << p3 << endl
+          << "Point p4: " << p4 << endl;
+
+     /*********************************************************************************/
+     // Setting / changing coordinates, using the available public methods
+     /*********************************************************************************/
+
+     p1.setCartesian(3, 0, 2.5);
+     cout << "\nChanged p1 = ";
+     p1.printCartesian();
+
+     p2.setCartesian(0, 4, 2.5);
+     cout << "\nChanged p2 = " << p2 << endl;
+
+     p3.setCylindrical(8.5, 3.14, 10);
+     cout << "\nChanged p1 = ";
+     p3.printCylindrical();
+
+     p4.setSpherical(32, 2.13, 3.12);
+     cout << "\nChanged p1 = ";
+     p4.printSpherical();
+
+     /*********************************************************************************/
      // Testing the distance function
      /*********************************************************************************/
 

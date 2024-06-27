@@ -3,6 +3,10 @@
 #include <cmath>
 #include <float.h>
 
+/****************************************************************************/
+/* CLASS DEFINITIONS                                                        */
+/****************************************************************************/
+
 /********************************/
 /* private methods              */
 /********************************/
@@ -96,16 +100,67 @@ Point::Point(double x, double y, double z, char a)
     switch (a)
     {
     case 's':
-        this->r_s = x;
+        if (x < 0)
+            this->r_s = -x;
+        else
+            this->r_s = x;
+
+        if (y < 0)
+        {
+            do
+            {
+                y = y + 2 * M_PI;
+            } while (y < 0);
+        }
+        else
+        {
+            if (y > 2 * M_PI)
+            {
+                do
+                {
+                    y = y - 2 * M_PI;
+                } while (y > 2 * M_PI);
+            }
+        }
         this->azimuth_s = y;
-        this->zenith = z;
+
+        if (z < 0)
+            this->zenith = 0.;
+        else if (z > M_PI)
+            this->zenith = M_PI;
+        else
+            this->zenith = z;
+
         spherical_to_cartesian();
         spherical_to_cylindrical();
         break;
     case 'c':
-        this->r_c = x;
+        if (x < 0)
+            this->r_c = -x;
+        else
+            this->r_c = x;
+
+        if (y < 0)
+        {
+            do
+            {
+                y = y + 2 * M_PI;
+            } while (y < 0);
+        }
+        else
+        {
+            if (y > 2 * M_PI)
+            {
+                do
+                {
+                    y = y - 2 * M_PI;
+                } while (y > 2 * M_PI);
+            }
+        }
         this->azimuth_c = y;
+
         this->z_c = z;
+
         cylindrical_to_cartesian();
         cylindrical_to_spherical();
         break;
@@ -113,11 +168,29 @@ Point::Point(double x, double y, double z, char a)
         this->x = x;
         this->y = y;
         this->z = z;
+
         cartesian_to_spherical();
         cartesian_to_cylindrical();
         break;
     }
+    (this->pointsNum)++;
 }
+
+Point::Point(const Point &pointToCopy)
+{
+    this->x = pointToCopy.x;
+    this->y = pointToCopy.y;
+    this->z = pointToCopy.z;
+    cartesian_to_cylindrical();
+    cartesian_to_spherical();
+    (this->pointsNum)++;
+}
+
+/********************************/
+/* destructor                   */
+/********************************/
+
+Point::~Point() { (this->pointsNum)--; }
 
 /********************************/
 /* public methods               */
@@ -142,6 +215,88 @@ double Point::getCylindricalRadial() { return this->r_c; }
 double Point::getCylindricalAzimuth() { return this->azimuth_c; }
 
 double Point::getCylindricalZ() { return this->z_c; }
+
+unsigned int Point::getNumberOfPoints() { return this->pointsNum; }
+
+/*-----------------------Setters------------------------------------*/
+
+void Point::setCartesian(double x, double y, double z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    cartesian_to_cylindrical();
+    cartesian_to_spherical();
+}
+
+void Point::setCylindrical(double r_c, double azimuth_c, double z_c)
+{
+    this->r_c = r_c;
+
+    if (azimuth_c < 0)
+    {
+        do
+        {
+            azimuth_c = azimuth_c + 2 * M_PI;
+        } while (azimuth_c < 0);
+    }
+    else
+    {
+        if (azimuth_c > 2 * M_PI)
+        {
+            do
+            {
+                azimuth_c = azimuth_c - 2 * M_PI;
+            } while (azimuth_c > 2 * M_PI);
+        }
+    }
+    this->azimuth_c = azimuth_c;
+
+    if (z_c < 0)
+        this->z_c = -z_c;
+    else
+        this->z_c = z_c;
+
+    cylindrical_to_cartesian();
+    cylindrical_to_spherical();
+}
+
+void Point::setSpherical(double r_s, double azimuth_s, double zenith)
+{
+    if (r_s < 0)
+        this->r_s = -r_s;
+    else
+        this->r_s = r_s;
+
+    if (azimuth_s < 0)
+    {
+        do
+        {
+            azimuth_s = azimuth_s + 2 * M_PI;
+        } while (azimuth_s < 0);
+    }
+    else
+    {
+        if (azimuth_s > 2 * M_PI)
+        {
+            do
+            {
+                azimuth_s = azimuth_s - 2 * M_PI;
+            } while (azimuth_s > 2 * M_PI);
+        }
+    }
+    this->azimuth_s = azimuth_s;
+
+    if (zenith < 0)
+        this->zenith = 0;
+    else if (zenith > M_PI)
+        this->zenith = M_PI;
+    else
+        this->zenith = zenith;
+
+    spherical_to_cartesian();
+    spherical_to_cylindrical();
+}
 
 /*------------------------Printers--------------------------------*/
 
@@ -174,21 +329,33 @@ void Point::printSpherical()
     std::cout << "[ " << this->r_s << " , " << this->azimuth_s << " , " << this->zenith << " ]" << std::endl;
 }
 
-// std::ostream Point::printToStreamCartesian()
-// {
-//     std::ostream stream;
-//     stream << "[ " << this->x << " , " << this->y << " , " << this->z << " ]";
-//     return stream;
-// }
+/****************************************************************************/
+/* OPERATOR OVERLOADS                                                       */
+/****************************************************************************/
 
-/********************************/
-/* operator overloads           */
-/********************************/
+std::ostream &operator<<(std::ostream &stream, Point b)
+{
+    stream << "[ " << b.getCartesianX() << " , " << b.getCartesianY() << " , " << b.getCartesianZ() << " ]";
+    return stream;
+}
 
-// Point Point::operator+(Point b)
-// {
-//     Point a;
-// }
+std::istream &operator>>(std::istream &in, Point &b)
+{
+    double x, y, z;
+
+    std::cout << "\nEnter x : ";
+    in >> x;
+    std::cout << "Enter y : ";
+    in >> y;
+    std::cout << "Enter z : ";
+    in >> z;
+    b.setCartesian(x, y, z);
+
+    return in;
+}
+/****************************************************************************/
+/* FUNCTIONS                                                                */
+/****************************************************************************/
 
 double distance_of_points(Point a, Point b)
 {
