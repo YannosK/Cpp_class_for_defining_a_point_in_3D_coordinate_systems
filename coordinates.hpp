@@ -143,8 +143,24 @@ public:
 
     /*------------------------Printers--------------------------------*/
 
+    /**
+     * Prints cartesian coordinates of Point object
+     * The form is: [ x , y , z ]
+     */
     void printCartesian();
+
+    /**
+     * Prints cylindrical coordinates of Point object
+     * The form is: [ radius , azimuth , z ]
+     *
+     * radius is on the x-y plane and z is the third dimension
+     */
     void printCylindrical();
+
+    /**
+     * Prints cartesian coordinates of Point object
+     * The form is: [ radius , azimuth , zenith ]
+     */
     void printSpherical();
 };
 

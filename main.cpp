@@ -11,6 +11,12 @@ int main(void)
      Point p4 = Point(8, 7.2, 4.12, 's'); // Point in spherical coordinates
 
      /*********************************************************************************/
+     // Testing the number of created objects of the class
+     /*********************************************************************************/
+
+     cout << "\nStarting the program, the number of Point objects is: " << p1.getNumberOfPoints() << endl;
+
+     /*********************************************************************************/
      // Using the print methods - called as regular functions (no operation overloads)
      /*********************************************************************************/
 
@@ -98,13 +104,19 @@ int main(void)
      p4.printSpherical();
 
      /*********************************************************************************/
-     // Testing the distance function
+     // Testing constructor copy and the distance function
      /*********************************************************************************/
 
-     Point r1 = Point(3, 0, 2.5);
-     Point r2 = Point(0, 4, 2.5);
+     Point r1 = Point(p1);
+     Point r2 = Point(p2);
 
      cout << "\nDistance of r1 and r2: " << distance_of_points(r1, r2) << endl;
+
+     /*********************************************************************************/
+     // Testing the number of created objects of the class
+     /*********************************************************************************/
+
+     cout << "\nEnding the program, the number of Point objects is: " << p1.getNumberOfPoints() << endl;
 
      return 0;
 }

@@ -8,6 +8,12 @@
 /****************************************************************************/
 
 /********************************/
+/* static field initialization  */
+/********************************/
+
+unsigned int Point::pointsNum = 0;
+
+/********************************/
 /* private methods              */
 /********************************/
 
@@ -26,7 +32,6 @@ void Point::cartesian_to_spherical()
     else
         this->azimuth_s = azim;
 
-    // not sure if it needs a check like azimuth
     if (this->z == 0.)
         this->zenith = atan2(sqrt(pow(this->x, 2) + pow(this->y, 2)), DBL_MIN);
     else
@@ -66,7 +71,6 @@ void Point::cylindrical_to_spherical()
 
     this->azimuth_s = this->azimuth_c;
 
-    // not sure if it needs a check like azimuth
     if (this->z_c == 0.)
         this->zenith = atan2(this->r_c, DBL_MIN);
     else
@@ -216,7 +220,7 @@ double Point::getCylindricalAzimuth() { return this->azimuth_c; }
 
 double Point::getCylindricalZ() { return this->z_c; }
 
-unsigned int Point::getNumberOfPoints() { return this->pointsNum; }
+unsigned int Point::getNumberOfPoints() { return Point::pointsNum; }
 
 /*-----------------------Setters------------------------------------*/
 
@@ -300,30 +304,16 @@ void Point::setSpherical(double r_s, double azimuth_s, double zenith)
 
 /*------------------------Printers--------------------------------*/
 
-/**
- * Prints cartesian coordinates of Point object
- * The form is: [ x , y , z ]
- */
 void Point::printCartesian()
 {
     std::cout << "[ " << this->x << " , " << this->y << " , " << this->z << " ]" << std::endl;
 }
 
-/**
- * Prints cylindrical coordinates of Point object
- * The form is: [ radius , azimuth , z ]
- *
- * radius is on the x-y plane and z is the third dimension
- */
 void Point::printCylindrical()
 {
     std::cout << "[ " << this->r_c << " , " << this->azimuth_c << " , " << this->z_c << " ]" << std::endl;
 }
 
-/**
- * Prints cartesian coordinates of Point object
- * The form is: [ radius , azimuth , zenith ]
- */
 void Point::printSpherical()
 {
     std::cout << "[ " << this->r_s << " , " << this->azimuth_s << " , " << this->zenith << " ]" << std::endl;
